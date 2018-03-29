@@ -1,0 +1,60 @@
+/*
+  Banana Piano
+  
+  This code implements a single octave of a simple piano. It borrows from Tom Igoe's tone 
+  example ( http://arduino.cc/en/Tutorial/Tone ) and uses his pitches.h include file for
+  the note frequencies. The digital input pins and their corresponding notes are defined
+  in arrays. Serial monitor output is provided to test key logic levels. 
+  
+  The digital inputs use 2.2 Meg Ohm pull-up resistors. The digital inputs are brought to
+  logic level LOW by grounding the banana connected to each digital input. 
+
+  Circuit:
+  8 - 2.2 Meg Ohm pull-up resistors, connected to +5 V and each of the digital input pins
+  1 - 220 Ohm resistor, connected from pin 12 to an 8 Ohm speaker
+  
+  R. Ballew, 31-Jan-2018                                                                                                                                         
+  
+*/
+#include "pitches.h"
+
+int numKeys = 8;
+int digInput[] = { 2, 3, 4, 5, 6, 7, 8, 9 };
+int myNote[] = { NOTE_C4, NOTE_D4, NOTE_E4, NOTE_F4, NOTE_G4, NOTE_A4, NOTE_B4, NOTE_C5 };
+int toneOut = 12;
+
+void setup() {
+  // Start serial connection
+  Serial.begin(9600);
+  // Configure digital input pins
+  for (int i = 0; i < numKeys; i++) {
+    pinMode(digInput[i], INPUT);
+  }
+  pinMode(toneOut, OUTPUT);
+}
+
+void loop() {
+  //
+  int keypressed = 0;
+  for (int j = 0; j < numKeys; j++) {
+    int sensorVal = digitalRead(digInput[j]);
+    String outStr = String("K");
+      outStr = String(outStr + j);
+      outStr = String(outStr + ": ");
+      outStr = String(outStr + sensorVal);
+    if (sensorVal == LOW) {
+      ++keypressed;  // increment keypressed
+      digitalWrite(13, HIGH);
+      tone(toneOut, myNote[j]);
+    }
+    //outStr = String(outStr + ":");
+    //outStr = String(outStr + keypressed);
+    Serial.print(outStr);
+    Serial.print("\t");
+  }
+  Serial.println("");
+  if (keypressed == 0) {
+    noTone(toneOut);
+  }
+  delay(250);
+}
