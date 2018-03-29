@@ -1,0 +1,156 @@
+#include <Stepper.h>
+#define STEPS_PER_MOTOR_REVOLUTION 32
+#define STEPS_PER_OUTPUT_REVOLUTION 32 * 64/2
+Stepper small_stepper1(STEPS_PER_MOTOR_REVOLUTION, 10, 12 , 11, 13);
+Stepper small_stepper2(STEPS_PER_MOTOR_REVOLUTION, 6, 8, 7, 9);
+Stepper small_stepper3(STEPS_PER_MOTOR_REVOLUTION, 1, 4, 3, 5);
+
+int sensorPin = A2;
+int pushButton = 2;
+int vib_pin = 2;
+int  Steps2Take;
+int cont;
+long st;
+int StepRod1;
+int StepRod2;
+int StepRod3;
+
+boolean choque = false;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(sensorPin, INPUT);
+  pinMode(vib_pin, INPUT);
+  pinMode(StepRod3, OUTPUT);
+  cont = 0;
+
+  attachInterrupt(digitalPinToInterrupt(2), choca, FALLING);
+}
+
+void loop() {
+
+  if (digitalRead(sensorPin) == HIGH) {
+    delay(10);
+    if (cont == 0)
+      st = millis();
+    cont = cont + 1;
+    while (digitalRead(sensorPin) != LOW) {
+      if (millis() - st > 2000) {
+        Serial.print(cont);
+        Serial.println(" aplausos");
+
+        doOrders(cont);
+        cont = 0;
+      }
+    }
+  }
+  if (millis() - st > 2000 && cont != 0) {
+    Serial.print(cont);
+    Serial.println(" aplausos");
+    doOrders(cont);
+    cont = 0;
+  }
+}
+
+
+void doOrders(int apl) {
+
+
+  if (cont == 1) {
+    StepRod1 = HIGH;
+    Steps2Take  =  STEPS_PER_OUTPUT_REVOLUTION * 2 ; // Rotate CW 1 turn
+    small_stepper1.setSpeed(1000);
+    small_stepper2.setSpeed(1000);
+
+    Serial.println("Adelante");
+
+    StepRod2 = HIGH;
+
+    for (int i = 0; i < Steps2Take; i++) {
+      small_stepper1.step(-1);
+      small_stepper2.step(1);
+
+      if (choque) {
+        brazo();
+        choque = false;
+        return;
+      }
+    }
+
+    StepRod3 = LOW;
+  }
+
+
+  if (cont == 2) {
+    StepRod2 = HIGH;
+    Steps2Take  =  STEPS_PER_OUTPUT_REVOLUTION * 2 ; // Rotate CW 1 turn
+    small_stepper2.setSpeed(1000);
+
+    Serial.println("Giro 1");
+    for (int i = 0; i < Steps2Take; i++) {
+      small_stepper2.step(1);
+
+      if (choque) {
+        brazo();
+        choque = false;
+        return;
+      }
+    }
+
+    StepRod1 = LOW;
+    StepRod3 = LOW;
+
+  }
+
+
+  if (cont == 3) {
+    StepRod1 = HIGH;
+    Steps2Take  =  STEPS_PER_OUTPUT_REVOLUTION * 2 ; // Rotate CW 1 turn
+    small_stepper1.setSpeed(1000);
+
+    Serial.println("Giro 2");
+
+    for (int i = 0; i < Steps2Take; i++) {
+      small_stepper1.step(-1);
+
+      if (choque) {
+        brazo();
+        choque = false;
+        return;
+      }
+    }
+
+    StepRod2 = LOW;
+    StepRod3 = LOW;
+  }
+
+}
+
+void choca() {
+  choque = true;
+}
+
+
+void brazo() {
+
+  //digitalWrite(StepRod3, HIGH);
+  //delay(500);
+
+  Serial.println("Brazo");
+
+  Steps2Take  =  STEPS_PER_OUTPUT_REVOLUTION * 2 ; // Rotate CW 1 turn
+  small_stepper3.setSpeed(1000);
+  small_stepper3.step(Steps2Take);
+
+}
+
+/*
+  if (moviPin = HIGH) {
+    StepRod1 = HIGH;
+    Steps2Take  =  STEPS_PER_OUTPUT_REVOLUTION * 2 ; // Rotate CW 1 turn
+    small_stepper1.setSpeed(1000);
+    small_stepper1.step(Steps2Take);
+
+    StepRod2 = LOW;
+    StepRod3 = LOW;
+  }*/
