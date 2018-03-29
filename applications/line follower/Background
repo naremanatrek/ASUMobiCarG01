@@ -1,1 +1,35 @@
+                    Line Follower Project
+ 
 
+
+
+in this project our smart car will detect a black path and follow it
+-components
+1-arduino board
+2-motor shield
+3-QTR reflectance sensor
+4-(x2) dc motors
+5-car chassis
+6-battery 9v
+-How Does the Line Follower Robot Work?
+The workings of a line follower robot are pretty straightforward. These robots have the capability to detect a black or dark line on a lighter surface depending on the contrast. They estimate whether the line underneath them is shifting toward their left or right as they move over them. Based on that estimation, they give respective signals to the motors to turn left or right so as to maintain a steady center with respect to the line. 
+
+These robots usually use an array of IR (infrared) sensors in order to calculate the reflectance of the surface beneath them. The basic criteria is that the black line has a lesser reflectance value (black absorbs light) than the lighter surface around it. This low value of reflectance is the parameter used to detect the position of the line by the robot. The higher value of reflectance will be the surface around the line. So in this linear array of IR sensors, if the leftmost or rightmost IR sensor presents the low value for reflectance, then the black line is toward the left or right of the robot correspondingly. The controller then compensates for this by signaling the motor to go in the opposite direction of the line.
+
+The IR sensor array consists of individual IR LEDs and IR photodiodes. The IR light emitted by the LED strikes the surface and is reflected back to the IR photodiode. The photodiode then gives an output voltage proportional to the reflectance of the surface (high value for a light surface and low for a black or dark surface).
+
+-Connections : 
+1) DC Motors connect to the Motor Shield
+2) Left Motors connect to M1
+3) Right Motors connect to M2
+4) The QTR-8RC Reflectance Sensor Connections
+- The Sensor VCC connect to the Arduino +5V
+- The Sensor GND connect to the Arduino Ground
+- The Sensor pin 2 connect to the Arduino Analog 0
+- The Sensor pin 3 connect to the Arduino Analog 1
+- The Sensor pin 4 connect to the Arduino Analog 2
+- The Sensor pin 5 connect to the Arduino Analog 3
+- The Sensor pin 6 connect to the Arduino Analog 4
+5) connect the battery
+- The (+) from the battery is connect to a leg of the button
+- Connect a cable to the other legs of the button. This cable is for Motor Shield (+)
