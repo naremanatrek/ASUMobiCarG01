@@ -1,0 +1,52 @@
+                    wall follower project
+
+
+in this project our robot will detect obstacles and walls and move whatever the wall exists
+
+
+
+
+
+
+
+
+
+components
+1- Arduino
+2- ultrasonic sensors(x2)
+3-  Dc motors(x2)
+4- motor driver
+5- Battery 12v
+6- voltage regulator 5v
+7- 1k resistor
+8- indicator led
+9- car chassis
+how it works?
+The obstacle detector sensor used in a wall follower can be either IR sensor or ultrasonic sensor. The IR sensors can be used to detect a predetermined and calibrated distance from the wall and so, on using IR sensors, the robot is designed to maintain a fixed distance from the wall. In such a case, a high path accuracy cannot be achieved. Secondly, in the presence of sun light or reflection from a black spot on the wall, the robot may not work as desired due to limitations of the IR sensor in such cases. While if ultrasonic sensor is used as obstacle detector, the robot can be designed to keep a range of distance with the wall which improves not only the flexibility of the path, but also improves its accuracy. Since ultrasonic sensors operate on the basis of reflection of ultrasonic (sound) waves, they can be relied in environments where there is sunlight or black obstacles in path. Considering these advantages of ultrasonic sensors over IR sensors, the ultrasonic sensors are used for obstacle or wall detection in this project. 
+ 
+The microcontroller board providing the intelligence to the robot is Arduino Pro Mini. The robot can also be designed on any other microcontroller board. The program code developed for this robot is also compatible with Arduino UNO and will work fine if the interfacing of sensors and motor driver IC is done the same way as the program operates. The Arduino Pro Mini is used due to its small size and light weight. Plus, the Pro Mini has sufficient GPIO pins just required for making this robot. The program code is written and burnt using Arduino IDE.
+
+
+
+connections
+
+Power Supply - In the circuit, Arduino Pro Mini and the ultrasonic sensors need a 5V regulated DC for their operation while the motor driver IC needs 12V DC. A 12V NIMH battery is used as the primary source of power. The supply froputs are drawn from pin 3 of the respective voltage regulator ICs. An LED along with a 10K Ω pull-up resistor is also connected between common ground and output pin to get a visual hint of supply continuity. Despite using 12V battery, 7812 is used to provide a regulated and stable supply to the motor driver IC. 
+ 
+Arduino Pro Mini - Arduino Pro Mini is a Atmega 168 based microcontroller board. It has 14 GPIO pins, 6 analog inputs, 6 PWM pins, 2 external interrupts and onboard UART, SPI and I2C. The board is just 1.3 inch by 0.7 inch in size that is six times smaller than Arduino UNO. With such features packed in small size, this board is most ideal for any robotic project. In this project, 8 input output pins of Pro Mini are utilized, four pins for interfacing with ultrasonic sensors and four pins for interfacing with motor driver IC. 
+ 
+HC-SR04 Ultrasonic Sensor - The HC-SR04 ultrasonic sensor uses sonar to determine distance to an object like bats or dolphins do. It offers excellent non-contact range detection with high accuracy and stable readings in range from 2 cm to 400 cm. 
+ 
+There are two ultrasonic sensors used in the circuit, one is mounted on front of the robot and other is mounted on left side of the robot. The ultrasonic sensor mounted on front is connected to pins 5 and 6 of the Arduino board and sensor mounted on left side is connected to pins 10 and 11 of the Arduino board. The ultrasonic sensor has four pins - Ground (Pin 1), Echo (Pin 2), Trigger (Pin 3) and Trigger. The VCC and ground pins are connected to common VCC and Ground respectively. The Echo pins of front and left sensor are connected to pins 5 and 11 of the Arduino board respectively while Trigger pins of front and left sensors are connected to pins 6 and 10 of the Arduino board. 
+ 
+The ultrasonic sensor works on the principle of echo of sound waves. When a HIGH pulse of 10 u sec is passed to the trigger pin of the sensor, it  transmits eight 40 KHz waves of HIGH Sonic Pulse shots back to back. A High pulse signal is out from the echo pin as the ultrasonic wave is transmitted. This wave when collides with an obstacle, it is reflected back and detected by the sensor. On detecting the wave again, the High pulse signal from the echo pin of the sensor is terminated. The signal received from the echo pin is analog in nature. The distance from the obstacle can be measured by measuring the high time of the echo pin. This is the time between the transmission and reflection back of the sonic wave. The distance is given by the formulae - 
+ 
+Test distance = (high level time × velocity of sound (340M/S)) / 2
+The time multiplied by velocity is divided by 2 as the time taken is for sonic wave to reach obstacle and return back. Therefore the distance measurement in cm can be given by the formulae - 
+Test distance = (high level time × velocity of sound (340M/S)) / 2
+                         = (high level time(microsecond) × velocity of sound (340M/S)) / 2
+                         = high level time x 340/2000000 m
+ = high level time x 34000/2000000 cm
+ = high level time x 34/2000 cm
+ 
+The ultrasonic sensors output the high pulse from their pin 2 which is detected at the pins 5 and 11 of the Arduino Board. The program code measures the pulse durations and digitize them to distance values using the formulae stated above. These distance values are utilized to maintain a set distance with the left side wall and divert from an obstacle in front of the robot from a preset distance. The motors are driven to  maintain pre-determined distance from the left side wall.
+m the battery is regulated to 5V and 12V using 7805 and 7812 ICs. The pin 1 of both the voltage regulator ICs is connected to the anode of the battery and pin 2 of both ICs is connected to ground. 
