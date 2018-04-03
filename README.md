@@ -1,7 +1,7 @@
-#ASUMobiCarG67/
-this project is mainly about obstacle avoiding robot
+#ASUMobiCarG67
+this project is mainly about obstacle avoiding robot.
 
-#Team Members:/
+#Team Members:
 1-nareman tarek allam yossef.
 2-yara isamel fekry mohamed.
 3-yara magdy mostafa mahmoud.
